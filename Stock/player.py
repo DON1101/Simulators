@@ -86,7 +86,7 @@ class Player(object):
          max_price,
          min_price) = self.market.get_stock_price_last_period()
 
-        target_price = max(avg_price + random.randint(-100, 100) / 10.0, 0.0)
+        target_price = max(avg_price + random.randint(-10, 10), 0.0)
         self._set_price(target_price)
 
     def try_sell(self):
@@ -104,7 +104,7 @@ class Player(object):
          max_price,
          min_price) = self.market.get_stock_price_last_period()
 
-        target_price = min(avg_price + random.randint(-100, 100) / 10.0,
+        target_price = min(avg_price + random.randint(-10, 10),
                            self.money_balance * 0.5)
         self._try_buy_stock(target_price)
 
