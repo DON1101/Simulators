@@ -21,7 +21,7 @@ class Broker(object):
     # Private method #
     ##################
 
-    def __clean_list(self, target_seller, target_buyer, target_stock):
+    def _clean_list(self, target_seller, target_buyer, target_stock):
         """
         Clean up the sell and buy list after a transaction to remove
         expired or dirty data.
@@ -39,25 +39,7 @@ class Broker(object):
                 tuple[1] != target_stock.sales_price,
             self.buy_list[-10000:])
 
-    ###################
-    # Object function #
-    ###################
-
-    def update_sell_list(self, player, stock):
-        """
-        Append the sell list.
-        """
-        if player and stock:
-            self.sell_list.append((player, stock))
-
-    def update_buy_list(self, player, target_price):
-        """
-        Append the buy list.
-        """
-        if player and target_price:
-            self.buy_list.append((player, target_price))
-
-    def match_player(self):
+    def _match_player(self):
         """
         Find and return 2 different players whose target prices are matched.
         """
@@ -71,7 +53,7 @@ class Broker(object):
 
         return (None, None, None)
 
-    def trade(self, seller, buyer, stock):
+    def _trade(self, seller, buyer, stock):
         """
         Do an actual transaction for seller and buyer.
         """
@@ -91,15 +73,33 @@ class Broker(object):
 
         stock.last_transaction_price = stock.sales_price
 
-        self.__clean_list(seller, buyer, stock)
+        self._clean_list(seller, buyer, stock)
+
+    ###################
+    # Object function #
+    ###################
+
+    def update_sell_list(self, player, stock):
+        """
+        Append the sell list.
+        """
+        if player and stock:
+            self.sell_list.append((player, stock))
+
+    def update_buy_list(self, player, target_price):
+        """
+        Append the buy list.
+        """
+        if player and target_price:
+            self.buy_list.append((player, target_price))
 
     def work(self):
         """
         Single complete work round for broker.
         """
-        (seller, buyer, stock) = self.match_player()
+        (seller, buyer, stock) = self._match_player()
         if seller and buyer and stock:
-            self.trade(seller, buyer, stock)
+            self._trade(seller, buyer, stock)
 
         return (seller, buyer, stock)
 

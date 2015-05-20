@@ -53,21 +53,21 @@ class Player(object):
     # Private method #
     ##################
 
-    def __set_price(self, target_price):
+    def _set_price(self, target_price):
         """
         Set price for all the stocks in hand.
         """
         for stock in self.stock_list:
             stock.sales_price = target_price
 
-    def __try_sell_stock(self, stock):
+    def _try_sell_stock(self, stock):
         """
         Inform the broker that I want to sell this stock.
         """
         if stock in self.stock_list:
             self.broker.update_sell_list(self, stock)
 
-    def __try_buy_stock(self, target_price):
+    def _try_buy_stock(self, target_price):
         """
         Inform the broker that I want to buy stock in target_price.
         """
@@ -83,21 +83,21 @@ class Player(object):
         Player will observe the market and adjust his own stock price.
         """
         market_price = self.market.get_stock_price_last_period()
-        self.__set_price(market_price + random.randint(0, 100) / 100.0)
+        self._set_price(market_price + random.randint(0, 100) / 100.0)
 
     def try_sell(self):
         """
         Inform the broker that I want to sell some stock.
         """
         if self.stock_list:
-            self.__try_sell_stock(self.stock_list[0])
+            self._try_sell_stock(self.stock_list[0])
 
     def try_buy(self):
         """
         Inform the broker that I want to buy some stock.
         """
         market_price = self.market.get_stock_price_last_period()
-        self.__try_buy_stock(market_price + random.randint(0, 100) / 100.0)
+        self._try_buy_stock(market_price + random.randint(0, 100) / 100.0)
 
     ####################
     # STANDARD METHODS #

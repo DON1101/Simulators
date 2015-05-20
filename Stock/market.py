@@ -56,7 +56,7 @@ class Market(object):
     # Private method #
     ##################
 
-    def __ready_for_next_period(self):
+    def _ready_for_next_period(self):
         self.stocks_last_period = []
 
     ###################
@@ -80,7 +80,7 @@ class Market(object):
         """
         Run the market for one period time.
         """
-        self.__ready_for_next_period()
+        self._ready_for_next_period()
 
         print "Sell list {0}, Buy list {1}".format(
             len(self.broker.sell_list),
