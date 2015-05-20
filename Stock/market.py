@@ -68,13 +68,16 @@ class Market(object):
         Get an average price for all stocks traded during last period.
         """
         if not self.stocks_last_period:
-            return self.last_avg_price
+            return (self.last_avg_price,
+                    self.last_avg_price,
+                    self.last_avg_price)
 
-        total_price = sum([stock.last_transaction_price
-                           for stock in self.stocks_last_period])
+        price_list = [stock.last_transaction_price
+                      for stock in self.stocks_last_period]
+        total_price = sum(price_list)
         avg_price = total_price / (len(self.stocks_last_period) + 0.01)
         self.last_avg_price = avg_price
-        return avg_price
+        return (avg_price, max(price_list), min(price_list))
 
     def run_period(self):
         """
@@ -97,8 +100,13 @@ class Market(object):
             if stock:
                 self.stocks_last_period.append(stock)
 
+        (avg_price,
+         max_price,
+         min_price) = self.get_stock_price_last_period()
         print ("During last period, {0} stocks are traded, "
-               "avg price {1}".format(
+               "avg price {1}, max price {2}, min price {3}".format(
                    len(self.stocks_last_period),
-                   self.get_stock_price_last_period())
+                   avg_price,
+                   max_price,
+                   min_price)
                )

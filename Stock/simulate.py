@@ -1,3 +1,4 @@
+import csv
 from market import Market
 
 
@@ -12,6 +13,13 @@ if __name__ == "__main__":
     # Start market behaviour loop #
     ###############################
 
-    for i in range(10000):
+    file_out = open("/tmp/market_price.csv", "w")
+    csv_writer = csv.writer(file_out)
+
+    for i in range(100):
         print i
         market.run_period()
+        csv_writer.writerow([market.get_stock_price_last_period()[0]])
+
+    file_out.flush()
+    file_out.close()
