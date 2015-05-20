@@ -12,14 +12,19 @@ class Market(object):
     # Object fileds #
     #################
 
-    player_list = []
+    player_list = None
     """
     All the players in this stock market.
     """
 
-    stocks_last_period = []
+    stocks_last_period = None
     """
     All the stocks traded during last period
+    """
+
+    last_avg_price = 0.0
+    """
+    The last recorded average market price.
     """
 
     broker = BrokerSingleton()
@@ -62,9 +67,14 @@ class Market(object):
         """
         Get an average price for all stocks traded during last period.
         """
+        if not self.stocks_last_period:
+            return self.last_avg_price
+
         total_price = sum([stock.last_transaction_price
                            for stock in self.stocks_last_period])
-        return total_price / (len(self.stocks_last_period) + 0.01)
+        avg_price = total_price / (len(self.stocks_last_period) + 0.01)
+        self.last_avg_price = avg_price
+        return avg_price
 
     def run_period(self):
         """
@@ -72,12 +82,17 @@ class Market(object):
         """
         self.__ready_for_next_period()
 
+        print "Sell list {0}, Buy list {1}".format(
+            len(self.broker.sell_list),
+            len(self.broker.buy_list)
+        )
+
         for player in self.player_list:
             player.adjust_price()
             player.try_sell()
             player.try_buy()
 
-        for i in range(10):
+        for i in range(100):
             (seller, buyer, stock) = self.broker.work()
             if stock:
                 self.stocks_last_period.append(stock)

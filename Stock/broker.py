@@ -25,17 +25,19 @@ class Broker(object):
         """
         Clean up the sell and buy list after a transaction to remove
         expired or dirty data.
+
+        Only keep the top 10000 recently records.
         """
         self.sell_list = filter(
             lambda tuple:
                 tuple[0] != target_seller or
                 tuple[1] != target_stock,
-            self.sell_list)
+            self.sell_list[-10000:])
         self.buy_list = filter(
             lambda tuple:
                 tuple[0] != target_buyer or
                 tuple[1] != target_stock.sales_price,
-            self.buy_list)
+            self.buy_list[-10000:])
 
     ###################
     # Object function #
