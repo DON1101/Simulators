@@ -43,10 +43,11 @@ class Broker(object):
         """
         Find and return 2 different players whose target prices are matched.
         """
+        self.sell_list.sort(key=lambda tuple: tuple[1].sales_price)
         for (seller, stock) in self.sell_list:
             for (buyer, target_price) in self.buy_list:
                 if seller != buyer and \
-                        stock.sales_price == target_price:
+                        stock.sales_price <= target_price:
                     self.sell_list.remove((seller, stock))
                     self.buy_list.remove((buyer, target_price))
                     return (seller, buyer, stock)

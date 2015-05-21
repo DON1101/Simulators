@@ -85,20 +85,30 @@ class Market(object):
         """
         self._ready_for_next_period()
 
+        ########################
+        # Players do their job #
+        ########################
+
+        for player in self.player_list:
+            player.try_sell()
+            player.try_buy()
+            player.period_ticking()
+
         print "Sell list {0}, Buy list {1}".format(
             len(self.broker.sell_list),
             len(self.broker.buy_list)
         )
 
-        for player in self.player_list:
-            player.adjust_price()
-            player.try_sell()
-            player.try_buy()
+        #####################
+        # Broker do his job #
+        #####################
 
-        for i in range(100):
+        while True:
             (seller, buyer, stock) = self.broker.work()
             if stock:
                 self.stocks_last_period.append(stock)
+            else:
+                break
 
         (avg_price,
          max_price,
