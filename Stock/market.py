@@ -125,8 +125,30 @@ class Market(object):
         player_list = sorted(self.player_list,
                              key=lambda p: p.money_balance,
                              reverse=True)
-        for player in player_list:
-            print "Player {0} with money {1}. Perseverance {2}".format(
-                player.identifier,
-                player.money_balance,
-                player.perseverance)
+        for player in player_list[:100]:
+            print ("Player {0} with money {1} and {2} stocks. "
+                   "Perseverance {3}".format(
+                       player.identifier,
+                       player.money_balance,
+                       len(player.stock_list),
+                       player.perseverance))
+
+    def rank_stock(self):
+        """
+        Rank stocks according to transaction count.
+        """
+        stock_list = []
+        for player in self.player_list:
+            stock_list.extend(player.stock_list)
+
+        stock_list.sort(key=lambda stock: stock.transaction_count,
+                        reverse=True)
+
+        for stock in stock_list[:100]:
+            if stock.transaction_count == 0:
+                continue
+            print ("Stock {0} current price {1}, "
+                   "transaction count {2}".format(
+                       stock.identifier,
+                       stock.sales_price,
+                       stock.transaction_count))

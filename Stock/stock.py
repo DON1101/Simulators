@@ -36,6 +36,18 @@ class Stock(object):
     This is used for statistic calculation in the whole market.
     """
 
+    transaction_count = 0
+    """
+    How many transactions happened regarding this stock.
+    """
+
+    ###################
+    # Object function #
+    ###################
+
+    def transaction_counting(self):
+        self.transaction_count += 1
+
     ####################
     # STANDARD METHODS #
     ####################

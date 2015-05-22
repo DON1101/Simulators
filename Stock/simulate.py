@@ -31,4 +31,5 @@ if __name__ == "__main__":
         file_out.flush()
 
     market.rank_player_wealth()
+    market.rank_stock()
     file_out.close()

@@ -75,6 +75,7 @@ class Broker(object):
             buyer.money_balance -= stock.sales_price
 
             stock.last_transaction_price = stock.sales_price
+            stock.transaction_counting()
 
             traded = True
 
