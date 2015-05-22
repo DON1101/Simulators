@@ -43,7 +43,7 @@ class Market(object):
         """
         self.player_list = []
         for i in range(players_num):
-            self.player_list.append(Player(i, 10000.0, self))
+            self.player_list.append(Player(i, 1000.0, self))
 
         stock_list = []
         for i in range(stocks_num):
@@ -104,8 +104,8 @@ class Market(object):
         #####################
 
         while True:
-            (seller, buyer, stock) = self.broker.work()
-            if stock:
+            (seller, buyer, stock, traded) = self.broker.work()
+            if traded:
                 self.stocks_last_period.append(stock)
             else:
                 break
@@ -120,3 +120,13 @@ class Market(object):
                    max_price,
                    min_price)
                )
+
+    def rank_player_wealth(self):
+        player_list = sorted(self.player_list,
+                             key=lambda p: p.money_balance,
+                             reverse=True)
+        for player in player_list:
+            print "Player {0} with money {1}. Perseverance {2}".format(
+                player.identifier,
+                player.money_balance,
+                player.perseverance)

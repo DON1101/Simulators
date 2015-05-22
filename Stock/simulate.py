@@ -16,9 +16,19 @@ if __name__ == "__main__":
     file_out = open("/tmp/market_price.csv", "w")
     csv_writer = csv.writer(file_out)
 
-    for i in range(400):
+    for i in range(1000):
         print i
         market.run_period()
-        csv_writer.writerow([market.get_stock_price_last_period()[0]])
+
+        (avg_price,
+         max_price,
+         min_price) = market.get_stock_price_last_period()
+        csv_writer.writerow([
+            avg_price,
+            max_price,
+            min_price
+        ])
         file_out.flush()
+
+    market.rank_player_wealth()
     file_out.close()

@@ -58,23 +58,28 @@ class Broker(object):
         """
         Do an actual transaction for seller and buyer.
         """
-        #################
-        # Update seller #
-        #################
+        traded = False
+        if buyer.money_balance >= stock.sales_price:
+            #################
+            # Update seller #
+            #################
 
-        seller.stock_list.remove(stock)
-        seller.money_balance += stock.sales_price
+            seller.stock_list.remove(stock)
+            seller.money_balance += stock.sales_price
 
-        ################
-        # Update buyer #
-        ################
+            ################
+            # Update buyer #
+            ################
 
-        buyer.stock_list.append(stock)
-        buyer.money_balance -= stock.sales_price
+            buyer.stock_list.append(stock)
+            buyer.money_balance -= stock.sales_price
 
-        stock.last_transaction_price = stock.sales_price
+            stock.last_transaction_price = stock.sales_price
+
+            traded = True
 
         self._clean_list(seller, buyer, stock)
+        return traded
 
     ###################
     # Object function #
@@ -100,9 +105,11 @@ class Broker(object):
         """
         (seller, buyer, stock) = self._match_player()
         if seller and buyer and stock:
-            self._trade(seller, buyer, stock)
+            traded = self._trade(seller, buyer, stock)
+        else:
+            traded = False
 
-        return (seller, buyer, stock)
+        return (seller, buyer, stock, traded)
 
 
 class BrokerSingleton(object):
