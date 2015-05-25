@@ -133,6 +133,8 @@ class Market(object):
                        len(player.stock_list),
                        player.perseverance))
 
+        return player_list
+
     def rank_stock(self):
         """
         Rank stocks according to transaction count.
@@ -152,3 +154,5 @@ class Market(object):
                        stock.identifier,
                        stock.sales_price,
                        stock.transaction_count))
+
+        return stock_list
